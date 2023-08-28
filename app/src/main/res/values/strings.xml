@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Scanbot Document SDK</string>
+    <string name="scan_results">Scan Result</string>
+    <string name="filter">Filter</string>
+    <string name="export">Export</string>
+    <string name="crop">Manual Crop</string>
+    <string name="blur">Detect Crop</string>
+
+    <string name="save_prf">Save Pdf</string>
+    <string name="save_tiff">Save TIFF</string>
+
+
+
+
+    <string name="low_light_binarization_filter">Low Light Binarization Filter</string>
+    <string name="sensitive_binarization_filter">Sensitive Binarization Filter</string>
+    <string name="low_light_binarization_filter_2">Low Light Binarization Filter 2</string>
+    <string name="edge_highlight_filter">Edge Highlight Filter</string>
+    <string name="deep_binarization_filter">Deep Binarization Filter</string>
+    <string name="otsu_binarization_filter">Otsu Binarization Filter</string>
+    <string name="clean_background_filter">Clean Background Filter</string>
+    <string name="color_document_filter">Color Document Filter</string>
+    <string name="color_filter">Color Filter</string>
+    <string name="grayscale_filter">Grayscale Filter</string>
+    <string name="binarizedfilter">Binarized Filter</string>
+    <string name="pure_binarized_filter">Pure Binarized Filter</string>
+    <string name="black_amp_white_filter"><![CDATA[Black & White Filter]]></string>
+    <string name="none">None</string>
+</resources>
