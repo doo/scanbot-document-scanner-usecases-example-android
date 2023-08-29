@@ -139,7 +139,7 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
                         // 0 - no blur, 1 - blurry. Please note that image blurriness is a subjective value and depends on the use case and document content. So 0.5 is vary a lot for different documents.
                         val blurValue =
                             exampleSingleton.pageBlurDetector().estimateInBitmap(image, 0)
-                        val text = if (blurValue > 0.5) {
+                        val text = if (blurValue < 0.5) {
                             "Document is ok"
                         } else {
                             "Document is not ok"
