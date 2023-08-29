@@ -35,15 +35,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResultOk(DocumentScannerActivity.ResultContract()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val pages = result.result ?: emptyList()
-                if (pages.isNotEmpty()) {
-                    if (pages.size > 1) {
-                        runPagesPreviewScreen(pages)
-                    } else {
-                        runSinglePreviewScreen(
-                            pages.first()
-                        )
-                    }
-                }
+                openPreviewForPages(pages)
             }
         }
 
@@ -76,14 +68,24 @@ class MainActivity : AppCompatActivity() {
                                 )
                                 page
                             }
-                            if (pages.size > 1) {
-                                runPagesPreviewScreen(pages)
-                            }
+                            openPreviewForPages(pages)
                         }
                     }
                 }
             }
         }
+
+    private fun openPreviewForPages(pages: List<Page>) {
+        if (pages.isNotEmpty()) {
+            if (pages.size > 1) {
+                runPagesPreviewScreen(pages)
+            } else {
+                runSinglePreviewScreen(
+                    pages.first()
+                )
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
