@@ -1,8 +1,4 @@
-package com.example.scanbot
-
-import android.app.Activity
-import com.example.scanbot.usecases.*
-import kotlin.reflect.KClass
+package com.example.scanbot.main
 
 enum class UseCase {
     SINGLE_PAGE,

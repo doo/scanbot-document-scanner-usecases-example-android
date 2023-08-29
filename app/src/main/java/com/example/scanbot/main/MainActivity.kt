@@ -1,4 +1,4 @@
-package com.example.scanbot
+package com.example.scanbot.main
 
 import android.app.Activity
 import android.content.Intent
@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.scanbot.preview.PagesPreviewActivity
+import com.example.scanbot.preview.SinglePagePreviewActivity
+import com.example.scanbot.utils.getUrisFromGalleryResult
+import com.example.scanbot.utils.toBitmap
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageStorageProcessor

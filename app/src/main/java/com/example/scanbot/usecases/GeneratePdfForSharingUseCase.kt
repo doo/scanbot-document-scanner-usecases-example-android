@@ -1,9 +1,7 @@
 package com.example.scanbot.usecases
 
-import android.net.Uri
-import com.example.scanbot.model.ExampleSingleton
-import io.scanbot.demo.internal.common.data.storage.ISharingDocumentStorage
-import com.example.scanbot.model.ensureFileExists
+import com.example.scanbot.sharing.ISharingDocumentStorage
+import com.example.scanbot.sharing.ensureFileExists
 import io.scanbot.sdk.core.contourdetector.DetectionStatus
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.process.PDFPageSize
@@ -14,8 +12,8 @@ import javax.inject.Inject
 
 class GeneratePdfForSharingUseCase @Inject constructor(
     sharingDocumentStorage: ISharingDocumentStorage,
-    exampleSingleton: ExampleSingleton) : GenerateFilesForSharingUseCase(sharingDocumentStorage) {
-    private val pdfRenderer: PDFRenderer = exampleSingleton.pagePDFRenderer()
+    private val pdfRenderer: PDFRenderer
+) : GenerateFilesForSharingUseCase(sharingDocumentStorage) {
     override suspend fun generateFilesForDocument(
         documentSharingDir: File,
         pages: List<String>

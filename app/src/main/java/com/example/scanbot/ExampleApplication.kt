@@ -18,7 +18,7 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize the Scanbot Barcode Scanner SDK:
+        // Initialize the Scanbot SDK:
         ScanbotSDKInitializer()
             .withLogging(true)
             .contourDetectorType(ContourDetector.Type.ML_BASED)
@@ -26,10 +26,9 @@ class ExampleApplication : Application() {
                 .imageFormat(CameraImageFormat.JPG)
                 .imageQuality(80)
                 .build())
+            .useFileEncryption(USE_ENCRYPTION)
             .imageProcessorType(ImageProcessor.Type.ML_BASED)
             .license(this, LICENSE_KEY)
             .initialize(this)
     }
-
-
 }

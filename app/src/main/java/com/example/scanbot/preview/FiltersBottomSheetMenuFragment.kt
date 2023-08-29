@@ -1,4 +1,4 @@
-package com.example.scanbot
+package com.example.scanbot.preview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.scanbot.example.FiltersListener
 import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.usecases.documents.R
 

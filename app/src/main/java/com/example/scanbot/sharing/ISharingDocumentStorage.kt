@@ -1,4 +1,4 @@
-package io.scanbot.demo.internal.common.data.storage
+package com.example.scanbot.sharing
 
 import java.io.File
 import java.io.IOException

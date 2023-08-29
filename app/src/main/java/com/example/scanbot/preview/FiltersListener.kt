@@ -1,4 +1,4 @@
-package io.scanbot.example
+package com.example.scanbot.preview
 
 import io.scanbot.sdk.process.ImageFilterType
 

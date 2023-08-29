@@ -1,4 +1,4 @@
-package com.example.scanbot
+package com.example.scanbot.preview
 
 import android.app.Activity
 import android.os.Bundle
@@ -10,27 +10,30 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.scanbot.ExampleUtils.showEncryptedDocumentToast
-import com.example.scanbot.model.ExampleSingletonImpl
-import com.example.scanbot.model.SharingDocumentStorage
+import com.example.scanbot.ExampleApplication
+import com.example.scanbot.di.ExampleSingletonImpl
+import com.example.scanbot.sharing.SaveListener
+import com.example.scanbot.sharing.SharingDocumentStorage
 import com.example.scanbot.usecases.GenerateJpgForSharingUseCase
 import com.example.scanbot.usecases.GeneratePdfForSharingUseCase
-import com.example.scanbot.usecases.GeneratePdfWithOcrForSharingUseCase
 import com.example.scanbot.usecases.GeneratePngForSharingUseCase
 import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
-import io.scanbot.example.FiltersListener
+import com.example.scanbot.utils.ExampleUtils
+import com.example.scanbot.utils.ExampleUtils.showEncryptedDocumentToast
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageFileStorage
-import io.scanbot.sdk.persistence.cleanup.Cleaner
 import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.ui.registerForActivityResultOk
 import io.scanbot.sdk.ui.view.edit.CroppingActivity
 import io.scanbot.sdk.ui.view.edit.configuration.CroppingConfiguration
 import io.scanbot.sdk.usecases.documents.R
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.FileOutputStream
 import kotlin.coroutines.CoroutineContext
 
 
@@ -42,7 +45,6 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
     private lateinit var exportPdf: GeneratePdfForSharingUseCase
     private lateinit var exportJpeg: GenerateJpgForSharingUseCase
     private lateinit var exportPng: GeneratePngForSharingUseCase
-    private lateinit var exportPdfWithOcr: GeneratePdfWithOcrForSharingUseCase
     private lateinit var exportTiff: GenerateTiffForSharingUseCase
     private lateinit var page: Page
 
@@ -52,12 +54,10 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
 
     }
 
-    private lateinit var cleaner: Cleaner
-
     private lateinit var filtersSheetFragment: FiltersBottomSheetMenuFragment
     private lateinit var saveSheetFragment: SaveBottomSheetMenuFragment
     private lateinit var scanbotSDK: ScanbotSDK
-    lateinit var progress: ProgressBar
+    private lateinit var progress: ProgressBar
 
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -80,15 +80,25 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         initMenu()
         exampleSingleton = ExampleSingletonImpl(this)
         val sharingDocumentStorage = SharingDocumentStorage(this)
-        exportPdf = GeneratePdfForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportPdfWithOcr =
-            GeneratePdfWithOcrForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportTiff = GenerateTiffForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportJpeg = GenerateJpgForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportPng = GeneratePngForSharingUseCase(sharingDocumentStorage, exampleSingleton)
+        exportPdf = GeneratePdfForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pagePDFRenderer()
+        )
+        exportTiff = GenerateTiffForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pageFileStorageInstance(),
+            exampleSingleton.pageTIFFWriter()
+        )
+        exportJpeg = GenerateJpgForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pageFileStorageInstance()
+        )
+        exportPng = GeneratePngForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pageFileStorageInstance()
+        )
 
         scanbotSDK = ScanbotSDK(application)
-        cleaner = scanbotSDK.createCleaner()
 
         imageView = findViewById(R.id.image)
 
@@ -208,7 +218,7 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
     }
 
     override fun savePdf() {
-        saveDocumentPdf(true)
+        saveDocumentPdf()
     }
 
     override fun saveTiff() {
@@ -260,12 +270,12 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         } else {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
-                var pdfFile: File? =
+                val pdfFile: File? =
                     withContext(Dispatchers.Default) {
                         if (withJpeg) {
-                            exportJpeg.generate(listOf(page.pageId))?.firstOrNull()
+                            exportJpeg.generate(listOf(page.pageId)).firstOrNull()
                         } else {
-                            exportPng.generate(listOf(page.pageId))?.firstOrNull()
+                            exportPng.generate(listOf(page.pageId)).firstOrNull()
                         }
                     }
 
@@ -289,20 +299,15 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         }
     }
 
-    private fun saveDocumentPdf(withOcr: Boolean) {
+    private fun saveDocumentPdf() {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
-                var pdfFile: File? =
-                    withContext(Dispatchers.Default) {
-                        if (withOcr) {
-                            exportPdfWithOcr.generate(listOf(page.pageId))?.firstOrNull()
-                        } else {
-                            exportPdf.generate(listOf(page.pageId))?.firstOrNull()
-                        }
-                    }
+                val pdfFile: File? = withContext(Dispatchers.Default) {
+                    exportPdf.generate(listOf(page.pageId)).firstOrNull()
+                }
 
                 withContext(Dispatchers.Main) {
                     progress.visibility = View.GONE
@@ -330,8 +335,8 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         } else {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
-                var pdfFile: File? = withContext(Dispatchers.Default) {
-                    exportTiff.generate(listOf(page.pageId))?.firstOrNull()
+                val pdfFile: File? = withContext(Dispatchers.Default) {
+                    exportTiff.generate(listOf(page.pageId)).firstOrNull()
                 }
 
                 withContext(Dispatchers.Main) {

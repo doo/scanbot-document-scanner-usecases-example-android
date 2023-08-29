@@ -1,28 +1,17 @@
-package com.example.scanbot
+package com.example.scanbot.utils
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.example.scanbot.model.SharingDocumentStorage
-import io.scanbot.sdk.barcode.entity.BarcodeScanningResult
+import com.example.scanbot.sharing.SharingDocumentStorage
 import io.scanbot.sdk.persistence.fileio.FileIOProcessor
 import io.scanbot.sdk.util.thread.MimeUtils
 import java.io.File
 import java.io.FileOutputStream
 
 object ExampleUtils {
-    fun showLicenseExpiredToastAndExit(activity: Activity) {
-        activity.runOnUiThread {
-            Toast.makeText(
-                activity, "License has expired!", Toast.LENGTH_LONG
-            ).show()
-            activity.finish()
-        }
-    }
 
 
     fun openBrowser(context: Context, url: String) {
@@ -31,7 +20,6 @@ object ExampleUtils {
     }
 
     fun openDocument(context: Context, pdfFile: File) {
-
         val uriForFile = androidx.core.content.FileProvider.getUriForFile(
             context,
             context.applicationContext.packageName + ".provider", pdfFile
@@ -59,7 +47,6 @@ object ExampleUtils {
                 )
             }
             context.startActivity(chooser)
-
         } else {
             Toast.makeText(
                 context,
@@ -82,9 +69,7 @@ object ExampleUtils {
             FileOutputStream(unEncryptedFile).use { outputStream ->
                 inputStream?.copyTo(outputStream)
             }
-            unEncryptedFile?.let {
-                ExampleUtils.openDocument(context, it)
-            }
+            openDocument(context, unEncryptedFile)
         }
         Toast.makeText(
             context,

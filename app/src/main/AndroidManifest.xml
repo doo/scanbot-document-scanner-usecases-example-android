@@ -14,7 +14,7 @@
 
 
         <activity
-            android:name="com.example.scanbot.MainActivity"
+            android:name="com.example.scanbot.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -22,8 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.scanbot.PagesPreviewActivity" />
-        <activity android:name="com.example.scanbot.SinglePagePreviewActivity" />
+        <activity android:name="com.example.scanbot.preview.PagesPreviewActivity" />
+        <activity android:name="com.example.scanbot.preview.SinglePagePreviewActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
