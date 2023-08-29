@@ -30,14 +30,27 @@ class MainActivity : AppCompatActivity() {
     private val documentScannerResult: ActivityResultLauncher<DocumentScannerConfiguration> =
         registerForActivityResultOk(DocumentScannerActivity.ResultContract()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                if ((result.result ?: emptyList()).size > 1) {
-                    runPagesPreviewScreen(result.result ?: emptyList())
+                val pages = result.result ?: emptyList()
+                if (pages.isNotEmpty()) {
+                    if (pages.size > 1) {
+                        runPagesPreviewScreen(pages)
+                    } else {
+                        runSinglePreviewScreen(
+                            pages.first()
+                        )
+                    }
                 }
             }
         }
-    private val finderDocumentScannerResult: ActivityResultLauncher<FinderDocumentScannerConfiguration> =
-        registerForActivityResultOk(FinderDocumentScannerActivity.ResultContract()) {
 
+    private val finderDocumentScannerResult: ActivityResultLauncher<FinderDocumentScannerConfiguration> =
+        registerForActivityResultOk(FinderDocumentScannerActivity.ResultContract()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val page = result.result
+                if (page != null) {
+                    runSinglePreviewScreen(page)
+                }
+            }
         }
 
     private val pictureForDocDetectionResult: ActivityResultLauncher<Intent> =
@@ -122,6 +135,7 @@ class MainActivity : AppCompatActivity() {
         val config = FinderDocumentScannerConfiguration()
         config.setFinderAspectRatio(io.scanbot.sdk.AspectRatio(21.0, 29.7)) // this a A4 format
         config.setLockDocumentAspectRatioToFinder(true) // allow only documents with finder aspect ratio to be scanned
+        config.setAcceptedSizeScore(0.75) // allow only documents with at least 75% of finder to be scanned
         finderDocumentScannerResult.launch(config)
     }
 
@@ -142,7 +156,15 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, PagesPreviewActivity::class.java)
         val bundle = Bundle()
         bundle.putStringArrayList("pages", ArrayList(pages.map { it.pageId }))
-        intent.putExtra("bundle",bundle)
+        intent.putExtra("bundle", bundle)
+        startActivity(intent)
+    }
+
+    private fun runSinglePreviewScreen(page: Page) {
+        val intent = Intent(this, SinglePagePreviewActivity::class.java)
+        val bundle = Bundle()
+        bundle.putString("page", page.pageId)
+        intent.putExtra("bundle", bundle)
         startActivity(intent)
     }
 }

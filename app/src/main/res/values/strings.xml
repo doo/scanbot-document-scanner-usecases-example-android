@@ -4,13 +4,12 @@
     <string name="filter">Filter</string>
     <string name="export">Export</string>
     <string name="crop">Manual Crop</string>
-    <string name="blur">Detect Crop</string>
+    <string name="blur">Detect Blur</string>
 
     <string name="save_prf">Save Pdf</string>
     <string name="save_tiff">Save TIFF</string>
-
-
-
+    <string name="save_jpeg">Save Jpeg</string>
+    <string name="save_png">Save Png</string>
 
     <string name="low_light_binarization_filter">Low Light Binarization Filter</string>
     <string name="sensitive_binarization_filter">Sensitive Binarization Filter</string>

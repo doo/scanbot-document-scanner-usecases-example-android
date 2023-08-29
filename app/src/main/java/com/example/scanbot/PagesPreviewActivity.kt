@@ -1,7 +1,5 @@
 package com.example.scanbot
 
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,14 +19,12 @@ import com.example.scanbot.usecases.GeneratePdfForSharingUseCase
 import com.example.scanbot.usecases.GeneratePdfWithOcrForSharingUseCase
 import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
 import io.scanbot.example.FiltersListener
-import io.scanbot.example.SaveListener
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageFileStorage
 import io.scanbot.sdk.persistence.cleanup.Cleaner
 import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.usecases.documents.R
-import io.scanbot.sdk.util.thread.MimeUtils
 import kotlinx.coroutines.*
 import java.io.File
 import kotlin.coroutines.CoroutineContext
@@ -63,13 +59,14 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_page_preview)
+        setContentView(R.layout.activity_pages_preview)
         initActionBar()
         initMenu()
         exampleSingleton = ExampleSingletonImpl(this)
         val sharingDocumentStorage = SharingDocumentStorage(this)
         exportPdf = GeneratePdfForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportPdfWithOcr = GeneratePdfWithOcrForSharingUseCase(sharingDocumentStorage, exampleSingleton)
+        exportPdfWithOcr =
+            GeneratePdfWithOcrForSharingUseCase(sharingDocumentStorage, exampleSingleton)
         exportTiff = GenerateTiffForSharingUseCase(sharingDocumentStorage, exampleSingleton)
         scanbotSDK = ScanbotSDK(application)
         cleaner = scanbotSDK.createCleaner()
@@ -143,7 +140,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         applyFilter(filterType)
     }
 
-    override fun saveWithOcr() {
+    override fun savePdf() {
         saveDocumentPdf(true)
     }
 
@@ -157,7 +154,12 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         } else {
             progress.visibility = View.VISIBLE
             launch {
-                //PageRepository.applyFilter(this@PagePreviewActivity, imageFilterType)
+                adapter.items.forEach { page ->
+                    withContext(Dispatchers.Default) {
+                        exampleSingleton.pageProcessorInstance().applyFilter(page, imageFilterType)
+                    }
+                }
+
                 withContext(Dispatchers.Main) {
                     adapter.notifyDataSetChanged()
                     progress.visibility = View.GONE
@@ -186,8 +188,9 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
             lifecycleScope.launch {
                 var pdfFile: File? =
                     withContext(Dispatchers.Default) {
-                        if(withOcr) {
-                            exportPdfWithOcr.generate(adapter.items.map { it.pageId })?.firstOrNull()
+                        if (withOcr) {
+                            exportPdfWithOcr.generate(adapter.items.map { it.pageId })
+                                ?.firstOrNull()
                         } else {
                             exportPdf.generate(adapter.items.map { it.pageId })?.firstOrNull()
                         }
@@ -199,7 +202,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
                     //open first document
                     if (pdfFile != null) {
                         if (!ExampleApplication.USE_ENCRYPTION) {
-                            openDocument(pdfFile)
+                            ExampleUtils.openDocument(this@PagesPreviewActivity, pdfFile)
                         } else {
                             showEncryptedDocumentToast(pdfFile)
                         }
@@ -226,7 +229,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
                     //open first document
                     if (pdfFile != null) {
                         if (!ExampleApplication.USE_ENCRYPTION) {
-                            openDocument(pdfFile)
+                            ExampleUtils.openDocument(this@PagesPreviewActivity, pdfFile)
                         } else {
                             showEncryptedDocumentToast(pdfFile)
                         }
@@ -275,37 +278,6 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
 
         override fun getItemCount(): Int {
             return items.size
-        }
-    }
-
-    private fun openDocument(pdfFile: File) {
-        val uriForFile = androidx.core.content.FileProvider.getUriForFile(
-            this@PagesPreviewActivity,
-            this@PagesPreviewActivity.applicationContext.packageName + ".provider", pdfFile
-        )
-        val openIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_STREAM, uriForFile)
-            type = MimeUtils.getMimeByName(pdfFile.name)
-        }
-        openIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-
-        if (openIntent.resolveActivity(packageManager) != null) {
-            val chooser = Intent.createChooser(openIntent, pdfFile.name)
-            val resInfoList = this.packageManager.queryIntentActivities(
-                chooser,
-                PackageManager.MATCH_DEFAULT_ONLY
-            )
-
-            for (resolveInfo in resInfoList) {
-                val packageName = resolveInfo.activityInfo.packageName
-                grantUriPermission(packageName, uriForFile, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            startActivity(chooser)
-
-        } else {
-            Toast.makeText(this@PagesPreviewActivity, "Error Opening Document!", Toast.LENGTH_LONG)
-                .show()
         }
     }
 

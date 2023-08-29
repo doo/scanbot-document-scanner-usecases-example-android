@@ -1,6 +1,9 @@
-package io.scanbot.example
+package com.example.scanbot
 
 interface SaveListener {
-    fun saveWithOcr()
+    fun savePdf()
     fun saveTiff()
+    fun saveJpeg() {}
+    fun savePng() {}
+
 }

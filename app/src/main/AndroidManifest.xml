@@ -23,6 +23,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.scanbot.PagesPreviewActivity" />
+        <activity android:name="com.example.scanbot.SinglePagePreviewActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -14,9 +14,7 @@ import javax.inject.Inject
 
 class GeneratePdfForSharingUseCase @Inject constructor(
     sharingDocumentStorage: ISharingDocumentStorage,
-    exampleSingleton: ExampleSingleton,
-
-    ) : GenerateFilesForSharingUseCase(sharingDocumentStorage) {
+    exampleSingleton: ExampleSingleton) : GenerateFilesForSharingUseCase(sharingDocumentStorage) {
     private val pdfRenderer: PDFRenderer = exampleSingleton.pagePDFRenderer()
     override suspend fun generateFilesForDocument(
         documentSharingDir: File,
