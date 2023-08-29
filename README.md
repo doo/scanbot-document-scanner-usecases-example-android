@@ -1,4 +1,4 @@
-# Scanbot Documents Scanner SDK Use Cases Example App for Android
+# Scanbot Document Scanning Use Cases Example App for Android
 
 This example app shows how to integrate the [Scanbot Document Scanner SDK for Android](https://scanbot.io/developer/android-document-scanner-sdk/).
 
