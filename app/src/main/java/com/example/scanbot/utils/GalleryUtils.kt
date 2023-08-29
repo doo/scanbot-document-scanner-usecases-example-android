@@ -11,7 +11,6 @@ import android.os.Build
 import androidx.exifinterface.media.ExifInterface
 import java.io.IOException
 
-
 fun getUrisFromGalleryResult(data: Intent): List<Uri> {
     return if (data.clipData != null) {
         val mClipData: ClipData? = data.clipData

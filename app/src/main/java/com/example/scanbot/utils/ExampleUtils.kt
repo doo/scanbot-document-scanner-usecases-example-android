@@ -12,8 +12,6 @@ import java.io.File
 import java.io.FileOutputStream
 
 object ExampleUtils {
-
-
     fun openBrowser(context: Context, url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
