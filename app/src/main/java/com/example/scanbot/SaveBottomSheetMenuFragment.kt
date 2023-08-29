@@ -23,8 +23,8 @@ class SaveBottomSheetMenuFragment : BottomSheetDialogFragment() {
             (activity as SaveListener).saveWithOcr()
             dismissAllowingStateLoss()
         }
-        view.findViewById<Button>(R.id.save_without_ocr).setOnClickListener {
-            (activity as SaveListener).saveWithOutOcr()
+        view.findViewById<Button>(R.id.save_tiff).setOnClickListener {
+            (activity as SaveListener).saveTiff()
             dismissAllowingStateLoss()
         }
         return view

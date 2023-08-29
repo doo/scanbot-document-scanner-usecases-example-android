@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.scanbot.model.ExampleSingletonImpl
 import com.example.scanbot.model.SharingDocumentStorage
 import com.example.scanbot.usecases.GeneratePdfForSharingUseCase
+import com.example.scanbot.usecases.GeneratePdfWithOcrForSharingUseCase
+import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
 import io.scanbot.example.FiltersListener
 import io.scanbot.example.SaveListener
 import io.scanbot.sdk.ScanbotSDK
@@ -38,6 +40,8 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     private lateinit var recycleView: RecyclerView
     private lateinit var exampleSingleton: ExampleSingletonImpl
     private lateinit var exportPdf: GeneratePdfForSharingUseCase
+    private lateinit var exportPdfWithOcr: GeneratePdfWithOcrForSharingUseCase
+    private lateinit var exportTiff: GenerateTiffForSharingUseCase
 
     companion object {
         private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
@@ -63,7 +67,10 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         initActionBar()
         initMenu()
         exampleSingleton = ExampleSingletonImpl(this)
-        exportPdf = GeneratePdfForSharingUseCase(SharingDocumentStorage(this), exampleSingleton)
+        val sharingDocumentStorage = SharingDocumentStorage(this)
+        exportPdf = GeneratePdfForSharingUseCase(sharingDocumentStorage, exampleSingleton)
+        exportPdfWithOcr = GeneratePdfWithOcrForSharingUseCase(sharingDocumentStorage, exampleSingleton)
+        exportTiff = GenerateTiffForSharingUseCase(sharingDocumentStorage, exampleSingleton)
         scanbotSDK = ScanbotSDK(application)
         cleaner = scanbotSDK.createCleaner()
 
@@ -137,11 +144,11 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     }
 
     override fun saveWithOcr() {
-        saveDocument(true)
+        saveDocumentPdf(true)
     }
 
-    override fun saveWithOutOcr() {
-        saveDocument(false)
+    override fun saveTiff() {
+        saveDocumentTiff()
     }
 
     private fun applyFilter(imageFilterType: ImageFilterType) {
@@ -171,7 +178,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         Toast.makeText(this@PagesPreviewActivity, "License is not valid!", Toast.LENGTH_LONG).show()
     }
 
-    private fun saveDocument(withOcr: Boolean) {
+    private fun saveDocumentPdf(withOcr: Boolean) {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
@@ -179,7 +186,38 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
             lifecycleScope.launch {
                 var pdfFile: File? =
                     withContext(Dispatchers.Default) {
-                        exportPdf.generate(adapter.items.map { it.pageId })?.firstOrNull()
+                        if(withOcr) {
+                            exportPdfWithOcr.generate(adapter.items.map { it.pageId })?.firstOrNull()
+                        } else {
+                            exportPdf.generate(adapter.items.map { it.pageId })?.firstOrNull()
+                        }
+                    }
+
+                withContext(Dispatchers.Main) {
+                    progress.visibility = View.GONE
+
+                    //open first document
+                    if (pdfFile != null) {
+                        if (!ExampleApplication.USE_ENCRYPTION) {
+                            openDocument(pdfFile)
+                        } else {
+                            showEncryptedDocumentToast(pdfFile)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun saveDocumentTiff() {
+        if (!scanbotSDK.licenseInfo.isValid) {
+            showLicenseToast()
+        } else {
+            progress.visibility = View.VISIBLE
+            lifecycleScope.launch {
+                var pdfFile: File? =
+                    withContext(Dispatchers.Default) {
+                        exportTiff.generate(adapter.items.map { it.pageId })?.firstOrNull()
                     }
 
                 withContext(Dispatchers.Main) {

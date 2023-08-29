@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/save_with_ocr" />
 
     <Button
-        android:id="@+id/save_without_ocr"
+        android:id="@+id/save_tiff"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:text="@string/save_tiff"
