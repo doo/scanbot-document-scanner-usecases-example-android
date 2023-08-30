@@ -90,7 +90,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         val layoutManager = GridLayoutManager(this, 3)
         recycleView.layoutManager = layoutManager
         val pages =
-            intent.getBundleExtra("bundle")?.getStringArrayList("pages")?.map { Page(pageId = it) }
+            intent.getStringArrayExtra("pages")?.map { Page(pageId = it) }
                 ?: emptyList()
         // initialize items only once, so we can update items from onActivityResult
         adapter.setItems(pages)

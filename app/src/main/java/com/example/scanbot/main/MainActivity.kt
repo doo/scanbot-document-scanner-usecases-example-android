@@ -161,16 +161,13 @@ class MainActivity : AppCompatActivity() {
     private fun runPagesPreviewScreen(pages: List<Page>) {
         val intent = Intent(this, PagesPreviewActivity::class.java)
         val bundle = Bundle()
-        bundle.putStringArrayList("pages", ArrayList(pages.map { it.pageId }))
-        intent.putExtra("bundle", bundle)
+        intent.putExtra("pages", ArrayList(pages.map { it.pageId }))
         startActivity(intent)
     }
 
     private fun runSinglePreviewScreen(page: Page) {
         val intent = Intent(this, SinglePagePreviewActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString("page", page.pageId)
-        intent.putExtra("bundle", bundle)
+        intent.putExtra("page", page.pageId)
         startActivity(intent)
     }
 }

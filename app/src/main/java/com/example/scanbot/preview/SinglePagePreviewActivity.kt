@@ -103,7 +103,7 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         imageView = findViewById(R.id.image)
 
         val pagesId =
-            intent.getBundleExtra("bundle")?.getString("page")
+            intent.getStringExtra("page")
                 ?: throw IllegalStateException("No page id")
         page = Page(pageId = pagesId)
 
