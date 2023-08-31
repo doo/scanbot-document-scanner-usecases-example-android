@@ -1,15 +1,18 @@
-package com.example.scanbot
+package com.example.scanbot.main
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.scanbot.utils.ExampleUtils
 import io.scanbot.sdk.usecases.documents.R
 
-class OptionAdapter( private val items: List<ViewType>,private val onScanningOptionClick:(UseCase)->Unit,) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OptionAdapter(
+    private val items: List<ViewType>,
+    private val onScanningOptionClick: (UseCase) -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     inner class TitleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.title_text_view)
@@ -41,7 +44,7 @@ class OptionAdapter( private val items: List<ViewType>,private val onScanningOpt
                     ExampleUtils.openBrowser(parent.context, "https://docs.scanbot.io/support/")
                 }
                 view.findViewById<TextView>(R.id.support_trial_license_button).setOnClickListener {
-                    // Use "io.scanbot.barcodesdkusecases" as an application ID to get a 7-day trial license key for this app.
+                    // Use "io.scanbot.documentsdkusecases" as an application ID to get a 7-day trial license key for this app.
                     ExampleUtils.openBrowser(parent.context, "https://scanbot.io/trial/")
                 }
                 SupportViewHolder(view)

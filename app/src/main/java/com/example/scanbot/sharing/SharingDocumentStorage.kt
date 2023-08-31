@@ -1,7 +1,6 @@
-package com.example.scanbot.model
+package com.example.scanbot.sharing
 
 import android.content.Context
-import io.scanbot.demo.internal.common.data.storage.ISharingDocumentStorage
 import java.io.File
 import java.io.IOException
 

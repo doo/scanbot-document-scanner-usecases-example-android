@@ -1,4 +1,4 @@
-package com.example.scanbot.model
+package com.example.scanbot.di
 
 import android.content.Context
 import io.scanbot.sdk.ScanbotSDK
@@ -29,7 +29,7 @@ interface ExampleSingleton {
 /**
  * This singleton is used only for simplicity. Please, use Dagger or other DI framework in production code
  */
-class ExampleSingletonImpl(val context: Context) : ExampleSingleton {
+class ExampleSingletonImpl(private val context: Context) : ExampleSingleton {
     override fun pageFileStorageInstance(): PageFileStorage {
         if (pageFileStorage == null) {
             pageFileStorage = ScanbotSDK(context.applicationContext).createPageFileStorage()

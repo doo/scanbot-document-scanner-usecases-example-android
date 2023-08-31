@@ -1,4 +1,4 @@
-package com.example.scanbot
+package com.example.scanbot.sharing
 
 interface SaveListener {
     fun savePdf()

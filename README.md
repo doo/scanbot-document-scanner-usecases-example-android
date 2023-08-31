@@ -1,11 +1,10 @@
 # Scanbot Document Scanning Use Cases Example App for Android
 
-This example app shows how to integrate the [Scanbot Document Scanner SDK for Android](https://scanbot.io/developer/android-document-scanner-sdk/).
+This example app demonstrates the primary use cases and integration methods for the [Scanbot Document Scanner SDK for Android](https://scanbot.io/developer/android-document-scanner-sdk/).
 
+## What is the Scanbot Document Scanner SDK?
 
-## What is Scanbot Barcode Scanner SDK?
-
-Scanbot Barcode Scanner SDK is a simple to use high level API, providing a collection of classes and functions for scanning and parsing 1D and 2D barcodes from your mobile device's camera or other image sources like your photo library.
+The Scanbot Document Scanner SDK is a set of classes and functions that you can add to your mobile application. It allows you to digitize paper documents using your smartphone's camera or other image sources such as your photo library. The SDK includes several usability and image enhancement features, including detailed user guidance, edge detection and auto-cropping, and multiple export formats.
 
 ## Trial License
 
@@ -21,31 +20,7 @@ We provide free "no-strings-attached" developer support for the implementation &
 If you encounter technical issues with integrating the Scanbot SDK or need advice on choosing the appropriate
 framework or features, please visit our [Support Page](https://docs.scanbot.io/support/).
 
-
-## Supported Barcode Types
-
-- [1D Barcodes](https://scanbot.io/products/barcode-software/1d-barcode-scanner/): [Codabar](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/codabar), [Code 39](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/code-39), [Code 93](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-93/), [Code 128](https://scanbot.io/products/barcode-software/1d-barcode-scanner/code-128/), [IATA 2 of 5](https://scanbot.io/products/barcode-software/1d-barcode-scanner/standard-2-of-5/), [Industrial 2 of 5](https://scanbot.io/products/barcode-software/1d-barcode-scanner/industrial-2-of-5/), [ITF](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/itf), [EAN-8](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/ean-code), [EAN-13](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/ean-code), [MSI Plessey](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/msi-plessey), RSS 14, [RSS Expanded (Databar)](https://scanbot.io/products/barcode-software/1d-barcode-scanner/gs1-databar/), [UPC-A](https://scanbot.io/products/barcode-software/1d-barcode-scanner/upc/), [UPC-E](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/upc-code).
-- [2D Barcodes](https://scanbot.io/products/barcode-software/2d-barcode-scanner/): [Aztec](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/aztec), [Data Matrix](https://scanbot.io/en/sdk/scanner-sdk/barcode-scanner-sdk/datamatrix), [PDF417](https://scanbot.io/products/barcode-software/2d-barcode-scanner/pdf417/), [QR Code](https://scanbot.io/products/barcode-software/2d-barcode-scanner/qr-code/).
-
-💡 Also check out our blog post [Types of barcodes](https://scanbot.io/blog/types-of-barcodes/).
-
-
-## Supported Data Parsers:
-
-- [AAMVA](https://scanbot.io/blog/drivers-license-barcode-parser/): Parse the AAMVA data format from PDF-417 barcodes on US driver's licenses.
-- Boarding pass data from PDF417 barcodes.
-- Parser for German Medical Certificates (aka. Disability Certificate or AU-Bescheinigung) coded in a PDF-417 barcode.
-- [GS1](https://scanbot.io/products/barcode-software/1d-barcode-scanner/gs1-databar/) encoded data from barcodes.
-- Data from PDF-417 barcodes on ID Cards.
-- Parse and extract data from XML of Data Matrix barcodes on Medical Plans (German Medikationsplan).
-- Data parser of QR-Code values printed on SEPA pay forms.
-- vCard data from a QR-Code (e.g. on business cards).
-- [Swiss QR](https://scanbot.io/products/barcode-software/2d-barcode-scanner/swiss-qr/) data from a QR-Code for easy, automatic and efficient payments.
-
-For more details please refer to the SDK documentation.
-
-
 ## Documentation
 
-👉 [Scanbot Barcode Scanner SDK documentation](https://docs.scanbot.io/barcode-scanner-sdk/android/introduction/)
+👉 [Scanbot Document Scanner SDK documentation](https://docs.scanbot.io/document-scanner-sdk/android/introduction/)
 

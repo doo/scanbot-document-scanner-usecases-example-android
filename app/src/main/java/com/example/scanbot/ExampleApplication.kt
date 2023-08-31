@@ -7,7 +7,6 @@ import io.scanbot.sdk.persistence.CameraImageFormat
 import io.scanbot.sdk.persistence.PageStorageSettings
 import io.scanbot.sdk.process.ImageProcessor
 
-
 class ExampleApplication : Application() {
 
     companion object {
@@ -18,18 +17,19 @@ class ExampleApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize the Scanbot Barcode Scanner SDK:
+        // Initialize the Scanbot SDK:
         ScanbotSDKInitializer()
             .withLogging(true)
             .contourDetectorType(ContourDetector.Type.ML_BASED)
-            .usePageStorageSettings(PageStorageSettings.Builder()
-                .imageFormat(CameraImageFormat.JPG)
-                .imageQuality(80)
-                .build())
+            .usePageStorageSettings(
+                PageStorageSettings.Builder()
+                    .imageFormat(CameraImageFormat.JPG)
+                    .imageQuality(80)
+                    .build()
+            )
+            .useFileEncryption(USE_ENCRYPTION)
             .imageProcessorType(ImageProcessor.Type.ML_BASED)
             .license(this, LICENSE_KEY)
             .initialize(this)
     }
-
-
 }

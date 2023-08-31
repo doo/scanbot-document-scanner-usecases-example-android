@@ -1,4 +1,4 @@
-package com.example.scanbot
+package com.example.scanbot.preview
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -13,19 +13,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.scanbot.model.ExampleSingletonImpl
-import com.example.scanbot.model.SharingDocumentStorage
+import com.example.scanbot.ExampleApplication
+import com.example.scanbot.di.ExampleSingletonImpl
+import com.example.scanbot.sharing.SaveListener
+import com.example.scanbot.sharing.SharingDocumentStorage
 import com.example.scanbot.usecases.GeneratePdfForSharingUseCase
-import com.example.scanbot.usecases.GeneratePdfWithOcrForSharingUseCase
 import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
-import io.scanbot.example.FiltersListener
+import com.example.scanbot.utils.ExampleUtils
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageFileStorage
 import io.scanbot.sdk.persistence.cleanup.Cleaner
 import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.usecases.documents.R
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.coroutines.CoroutineContext
 
@@ -36,13 +41,11 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     private lateinit var recycleView: RecyclerView
     private lateinit var exampleSingleton: ExampleSingletonImpl
     private lateinit var exportPdf: GeneratePdfForSharingUseCase
-    private lateinit var exportPdfWithOcr: GeneratePdfWithOcrForSharingUseCase
     private lateinit var exportTiff: GenerateTiffForSharingUseCase
 
     companion object {
         private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
         private const val SAVE_MENU_TAG = "SAVE_MENU_TAG"
-
     }
 
     private lateinit var cleaner: Cleaner
@@ -50,7 +53,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     private lateinit var filtersSheetFragment: FiltersBottomSheetMenuFragment
     private lateinit var saveSheetFragment: SaveBottomSheetMenuFragment
     private lateinit var scanbotSDK: ScanbotSDK
-    lateinit var progress: ProgressBar
+    private lateinit var progress: ProgressBar
 
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -64,10 +67,15 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         initMenu()
         exampleSingleton = ExampleSingletonImpl(this)
         val sharingDocumentStorage = SharingDocumentStorage(this)
-        exportPdf = GeneratePdfForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportPdfWithOcr =
-            GeneratePdfWithOcrForSharingUseCase(sharingDocumentStorage, exampleSingleton)
-        exportTiff = GenerateTiffForSharingUseCase(sharingDocumentStorage, exampleSingleton)
+        exportPdf = GeneratePdfForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pagePDFRenderer()
+        )
+        exportTiff = GenerateTiffForSharingUseCase(
+            sharingDocumentStorage,
+            exampleSingleton.pageFileStorageInstance(),
+            exampleSingleton.pageTIFFWriter()
+        )
         scanbotSDK = ScanbotSDK(application)
         cleaner = scanbotSDK.createCleaner()
 
@@ -82,7 +90,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         val layoutManager = GridLayoutManager(this, 3)
         recycleView.layoutManager = layoutManager
         val pages =
-            intent.getBundleExtra("bundle")?.getStringArrayList("pages")?.map { Page(pageId = it) }
+            intent.getStringArrayExtra("pages")?.map { Page(pageId = it) }
                 ?: emptyList()
         // initialize items only once, so we can update items from onActivityResult
         adapter.setItems(pages)
@@ -141,7 +149,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     }
 
     override fun savePdf() {
-        saveDocumentPdf(true)
+        saveDocumentPdf()
     }
 
     override fun saveTiff() {
@@ -180,20 +188,15 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         Toast.makeText(this@PagesPreviewActivity, "License is not valid!", Toast.LENGTH_LONG).show()
     }
 
-    private fun saveDocumentPdf(withOcr: Boolean) {
+    private fun saveDocumentPdf() {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
-                var pdfFile: File? =
+                val pdfFile: File? =
                     withContext(Dispatchers.Default) {
-                        if (withOcr) {
-                            exportPdfWithOcr.generate(adapter.items.map { it.pageId })
-                                ?.firstOrNull()
-                        } else {
-                            exportPdf.generate(adapter.items.map { it.pageId })?.firstOrNull()
-                        }
+                        exportPdf.generate(adapter.items.map { it.pageId }).firstOrNull()
                     }
 
                 withContext(Dispatchers.Main) {
@@ -218,9 +221,9 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         } else {
             progress.visibility = View.VISIBLE
             lifecycleScope.launch {
-                var pdfFile: File? =
+                val pdfFile: File? =
                     withContext(Dispatchers.Default) {
-                        exportTiff.generate(adapter.items.map { it.pageId })?.firstOrNull()
+                        exportTiff.generate(adapter.items.map { it.pageId }).firstOrNull()
                     }
 
                 withContext(Dispatchers.Main) {
@@ -290,10 +293,10 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     /**
      * View holder for page and its number.
      */
-    private inner class PageViewHolder internal constructor(itemView: View) :
+    private inner class PageViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
 
-        internal val imageView: ImageView = itemView.findViewById<View>(R.id.page) as ImageView
+        val imageView: ImageView = itemView.findViewById<View>(R.id.page) as ImageView
 
     }
 }
