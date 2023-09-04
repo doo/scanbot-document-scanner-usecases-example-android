@@ -14,16 +14,6 @@ class OptionAdapter(
     private val onScanningOptionClick: (UseCase) -> Unit,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class TitleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.title_text_view)
-    }
-
-    inner class OptionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val option: TextView = view.findViewById(R.id.option_text_view)
-    }
-
-    inner class SupportViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
     override fun getItemViewType(position: Int): Int {
         return items[position].type
     }
@@ -74,4 +64,15 @@ class OptionAdapter(
     override fun getItemCount(): Int {
         return items.size
     }
+
+    inner class TitleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val title: TextView = view.findViewById(R.id.title_text_view)
+    }
+
+    inner class OptionViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val option: TextView = view.findViewById(R.id.option_text_view)
+    }
+
+    inner class SupportViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
 }
