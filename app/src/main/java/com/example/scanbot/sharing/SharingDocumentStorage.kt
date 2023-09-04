@@ -17,7 +17,7 @@ class SharingDocumentStorage constructor(
     }
 }
 
-fun File.ensureFileExists() : File {
+fun File.ensureFileExists(): File {
     if (!exists() && !mkdirs()) {
         throw IOException("File doesn't exists or dir is not reachable")
     }

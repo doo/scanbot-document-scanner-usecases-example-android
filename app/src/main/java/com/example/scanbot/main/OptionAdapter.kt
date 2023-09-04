@@ -31,15 +31,20 @@ class OptionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             0 -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.main_item_title, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.main_item_title, parent, false)
                 TitleViewHolder(view)
             }
+
             1 -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.main_item_option, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.main_item_option, parent, false)
                 OptionViewHolder(view)
             }
+
             else -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.main_item_support, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.main_item_support, parent, false)
                 view.findViewById<Button>(R.id.support_contact_button).setOnClickListener {
                     ExampleUtils.openBrowser(parent.context, "https://docs.scanbot.io/support/")
                 }
@@ -61,6 +66,7 @@ class OptionAdapter(
                     onScanningOptionClick(item.useCase)
                 }
             }
+
             is ViewType.Support -> {}
         }
     }

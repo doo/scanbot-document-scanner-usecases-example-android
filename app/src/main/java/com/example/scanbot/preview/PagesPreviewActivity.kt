@@ -43,11 +43,6 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     private lateinit var exportPdf: GeneratePdfForSharingUseCase
     private lateinit var exportTiff: GenerateTiffForSharingUseCase
 
-    companion object {
-        private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
-        private const val SAVE_MENU_TAG = "SAVE_MENU_TAG"
-    }
-
     private lateinit var cleaner: Cleaner
 
     private lateinit var filtersSheetFragment: FiltersBottomSheetMenuFragment
@@ -298,5 +293,10 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
 
         val imageView: ImageView = itemView.findViewById<View>(R.id.page) as ImageView
 
+    }
+
+    companion object {
+        private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
+        private const val SAVE_MENU_TAG = "SAVE_MENU_TAG"
     }
 }

@@ -16,8 +16,8 @@ class GenerateJpgForSharingUseCase @Inject constructor(
             val pageFileName = if (pages.size == 1) "${page}.jpg" else "$page (${index + 1}).jpg"
             val sharingJpgFile = documentSharingDir.ensureFileExists().resolve(pageFileName)
 
-            val originalPageImage = pageFileStorage.getImageURI(page, PageFileStorage.PageFileType.DOCUMENT)
-            originalPageImage.toFile().copyTo(sharingJpgFile, overwrite = true)
+            val documentImage = pageFileStorage.getImageURI(page, PageFileStorage.PageFileType.DOCUMENT)
+            documentImage.toFile().copyTo(sharingJpgFile, overwrite = true)
            sharingJpgFile
         }
     }

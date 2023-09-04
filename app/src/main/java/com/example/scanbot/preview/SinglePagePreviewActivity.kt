@@ -48,12 +48,6 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
     private lateinit var exportTiff: GenerateTiffForSharingUseCase
     private lateinit var page: Page
 
-    companion object {
-        private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
-        private const val SAVE_MENU_TAG = "SAVE_MENU_TAG"
-
-    }
-
     private lateinit var filtersSheetFragment: FiltersBottomSheetMenuFragment
     private lateinit var saveSheetFragment: SaveBottomSheetMenuFragment
     private lateinit var scanbotSDK: ScanbotSDK
@@ -359,5 +353,9 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         }
     }
 
+    companion object {
+        private const val FILTERS_MENU_TAG = "FILTERS_MENU_TAG"
+        private const val SAVE_MENU_TAG = "SAVE_MENU_TAG"
 
+    }
 }

@@ -18,15 +18,15 @@ class GeneratePngForSharingUseCase @Inject constructor(
     ): List<File> {
         return pages.mapIndexed { index, page ->
             val pageFileName = if (pages.size == 1) "${page}.png" else "$page (${index + 1}).png"
-            val sharingJpgFile = documentSharingDir.ensureFileExists().resolve(pageFileName)
+            val sharingPngFile = documentSharingDir.ensureFileExists().resolve(pageFileName)
 
-            val originalPageBitmap =
+            val documentImage =
                 pageFileStorage.getImage(page, PageFileStorage.PageFileType.DOCUMENT)
 
-            FileOutputStream(sharingJpgFile).use {
-                originalPageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, it)
+            FileOutputStream(sharingPngFile).use {
+                documentImage?.compress(Bitmap.CompressFormat.PNG, 100, it)
             }
-            sharingJpgFile
+            sharingPngFile
         }
     }
 }

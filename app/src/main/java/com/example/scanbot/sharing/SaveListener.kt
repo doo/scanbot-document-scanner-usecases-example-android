@@ -5,5 +5,4 @@ interface SaveListener {
     fun saveTiff()
     fun saveJpeg() {}
     fun savePng() {}
-
 }

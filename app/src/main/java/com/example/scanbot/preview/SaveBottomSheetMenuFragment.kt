@@ -13,7 +13,8 @@ import io.scanbot.sdk.usecases.documents.R
 /**
  * Represents bottom menu sheet for document screen with saving dialog
  */
-class SaveBottomSheetMenuFragment(private val onePageMode: Boolean = false) : BottomSheetDialogFragment() {
+class SaveBottomSheetMenuFragment(private val onePageMode: Boolean = false) :
+    BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

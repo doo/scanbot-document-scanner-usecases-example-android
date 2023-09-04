@@ -16,5 +16,5 @@ dependencyResolutionManagement {
         maven { url "https://nexus.scanbot.io/nexus/content/repositories/snapshots/" }
     }
 }
-rootProject.name = "scanbot-barcode-sdk-usecases-example-android"
+rootProject.name = "scanbot-document-sdk-usecases-example-android"
 include ':app'
