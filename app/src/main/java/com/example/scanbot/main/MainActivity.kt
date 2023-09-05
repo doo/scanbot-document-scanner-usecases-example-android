@@ -184,4 +184,14 @@ class MainActivity : AppCompatActivity() {
         config.setTextHintNothingDetected("No document detected, please try again")
         documentScannerResult.launch(config)
     }
+
+
+    private fun runSinglePageAutoSnap() {
+        val config = DocumentScannerConfiguration()
+        config.setAutoSnappingButtonTitle("Auto-Snap")
+        config.setAutoSnappingButtonHidden(false)
+        config.setAutoSnappingEnabled(true)
+        documentScannerResult.launch(config)
+    }
+    
 }
