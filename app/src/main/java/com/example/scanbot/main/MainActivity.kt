@@ -93,9 +93,9 @@ class MainActivity : AppCompatActivity() {
 
         val items = listOf(
             ViewType.Header("Document Scanning Use Cases"),
-            ViewType.Option(UseCase.SINGLE_PAGE, "Single Page Scanning"),
-            ViewType.Option(UseCase.MULTIPLE_PAGE, "Multiple Page Scanning"),
-            ViewType.Option(UseCase.FINDER, "Finder Page Scanning"),
+            ViewType.Option(UseCase.SINGLE_PAGE, "Single-Page Scanning"),
+            ViewType.Option(UseCase.MULTIPLE_PAGE, "Multiple-Page Scanning"),
+            ViewType.Option(UseCase.FINDER, "Finder-Page Scanning"),
             ViewType.Option(UseCase.GALLERY, "Gallery Upload"),
             ViewType.Support(),
         )
