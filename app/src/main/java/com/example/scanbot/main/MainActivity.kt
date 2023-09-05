@@ -170,4 +170,18 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra("page", page.pageId)
         startActivity(intent)
     }
+
+    private fun runSinglePageScannerWithGuidance() {
+        val config = DocumentScannerConfiguration()
+        config.setMultiPageEnabled(false)
+        config.setMultiPageButtonHidden(true)
+        config.setTextHintBadAngles("Hold your phone parallel to the document")
+        config.setTextHintOK("Hold your phone, steady, trying to scan")
+        config.setTextHintBadAspectRatio("The document is not in the correct format")
+        config.setTextHintTooDark("Its too dark, please add more light")
+        config.setTextHintTooSmall("Document too small, please move closer")
+        config.setTextHintTooNoisy("Image too noisy, please move to a better lit area")
+        config.setTextHintNothingDetected("No document detected, please try again")
+        documentScannerResult.launch(config)
+    }
 }
