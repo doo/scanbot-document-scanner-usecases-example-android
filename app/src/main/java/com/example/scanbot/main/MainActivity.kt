@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
             ViewType.Option(UseCase.SINGLE_PAGE, "Single-Page Scanning"),
             ViewType.Option(UseCase.MULTIPLE_PAGE, "Multiple-Page Scanning"),
             ViewType.Option(UseCase.FINDER, "Finder-Page Scanning"),
-            ViewType.Option(UseCase.GALLERY, "Gallery Upload"),
+            ViewType.Option(UseCase.GALLERY, "Pick from Gallery"),
             ViewType.Support(),
         )
 
