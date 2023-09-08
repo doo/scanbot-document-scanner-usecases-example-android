@@ -8,7 +8,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "io.scanbot.documentsdkusecases"
+        applicationId "io.scanbot.example.document.usecases.android"
         minSdk 22
         targetSdk 33
         versionCode 1
