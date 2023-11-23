@@ -4,7 +4,7 @@
     <string name="filter">Filter</string>
     <string name="export">Export</string>
     <string name="crop">Manual Crop</string>
-    <string name="blur">Detect Blur</string>
+    <string name="document_quality_analyzer">Analyze Document Quality</string>
 
     <string name="save_prf">Save Pdf</string>
     <string name="save_tiff">Save TIFF</string>

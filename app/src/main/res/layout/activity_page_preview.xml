@@ -57,7 +57,7 @@
             android:textStyle="normal" />
 
         <TextView
-            android:id="@+id/action_blur"
+            android:id="@+id/action_doc_quality_analyzer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -65,7 +65,7 @@
             android:gravity="center_horizontal"
             android:letterSpacing="0.09"
             android:lineSpacingExtra="2sp"
-            android:text="@string/blur"
+            android:text="@string/document_quality_analyzer"
             android:textColor="@color/white"
             android:textSize="14sp"
             android:textStyle="normal" />
