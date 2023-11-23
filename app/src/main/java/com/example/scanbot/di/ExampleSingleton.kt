@@ -7,7 +7,7 @@ import io.scanbot.sdk.docprocessing.PdfPagesExtractor
 import io.scanbot.sdk.ocr.OpticalCharacterRecognizer
 import io.scanbot.sdk.persistence.PageFileStorage
 import io.scanbot.sdk.persistence.fileio.FileIOProcessor
-import io.scanbot.sdk.process.BlurEstimator
+import io.scanbot.sdk.process.DocumentQualityAnalyzer
 import io.scanbot.sdk.process.PDFRenderer
 import io.scanbot.sdk.tiff.TIFFWriter
 
@@ -21,7 +21,7 @@ interface ExampleSingleton {
     fun pageOpticalCharacterRecognizer(): OpticalCharacterRecognizer
     fun pagePDFRenderer(): PDFRenderer
     fun pageTIFFWriter(): TIFFWriter
-    fun pageBlurDetector(): BlurEstimator
+    fun pageDocQualityAnalyzer(): DocumentQualityAnalyzer
     fun fileIOProcessor(): FileIOProcessor
 
 }
@@ -72,11 +72,11 @@ class ExampleSingletonImpl(private val context: Context) : ExampleSingleton {
         return tiffWriter!!
     }
 
-    override fun pageBlurDetector(): BlurEstimator {
-        if (blurEstimator == null) {
-            blurEstimator = ScanbotSDK(context.applicationContext).createBlurEstimator()
+    override fun pageDocQualityAnalyzer(): DocumentQualityAnalyzer {
+        if (documentQualityAnalyzer == null) {
+            documentQualityAnalyzer = ScanbotSDK(context.applicationContext).createDocumentQualityAnalyzer()
         }
-        return blurEstimator!!
+        return documentQualityAnalyzer!!
     }
 
     override fun fileIOProcessor(): FileIOProcessor {
@@ -93,7 +93,7 @@ class ExampleSingletonImpl(private val context: Context) : ExampleSingleton {
         private var textRecognition: OpticalCharacterRecognizer? = null
         private var pdfRenderer: PDFRenderer? = null
         private var tiffWriter: TIFFWriter? = null
-        private var blurEstimator: BlurEstimator? = null
+        private var documentQualityAnalyzer: DocumentQualityAnalyzer? = null
         private var fileIOProcessor: FileIOProcessor? = null
     }
 }

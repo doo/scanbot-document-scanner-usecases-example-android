@@ -32,11 +32,11 @@ android {
     }
 }
 
-def scanbotSdkVersion = "3.0.0"
+def scanbotSdkVersion = "4.1.0"
 
 dependencies {
 
-    implementation "io.scanbot:sdk-blur-assets:$scanbotSdkVersion"
+    implementation "io.scanbot:sdk-docqualityanalyzer-assets:$scanbotSdkVersion"
     implementation "io.scanbot:sdk-ml-imageprocessor-assets:$scanbotSdkVersion"
     implementation "io.scanbot:sdk-package-1:$scanbotSdkVersion"
     implementation "io.scanbot:sdk-package-ui:$scanbotSdkVersion"

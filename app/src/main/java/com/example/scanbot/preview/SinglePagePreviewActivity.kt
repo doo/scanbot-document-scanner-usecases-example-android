@@ -114,9 +114,9 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
             runCroppingUseCase()
         }
 
-        val actionBlur = findViewById<TextView>(R.id.action_blur)
-        actionBlur.setOnClickListener {
-            runBlurDetection()
+        val actionDocQualityAnalyzer = findViewById<TextView>(R.id.action_doc_quality_analyzer)
+        actionDocQualityAnalyzer.setOnClickListener {
+            runDocumentQualityAnalyzer()
         }
 
         val export = findViewById<TextView>(R.id.action_export)
@@ -128,7 +128,7 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         }
     }
 
-    private fun runBlurDetection() {
+    private fun runDocumentQualityAnalyzer() {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
@@ -140,14 +140,11 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
                 }
                 withContext(Dispatchers.Main) {
                     image?.let {
-                        // 0 - no blur, 1 - blurry. Please note that image blurriness is a subjective value and depends on the use case and document content. So 0.5 is vary a lot for different documents.
-                        val blurValue =
-                            exampleSingleton.pageBlurDetector().estimateInBitmap(image, 0)
-                        val text = if (blurValue < 0.5) {
-                            "Document is ok"
-                        } else {
-                            "Document is not ok"
-                        }
+
+                        // Result is represented by `DocumentQualityResult` enum.
+                        val analyzerResult =
+                            exampleSingleton.pageDocQualityAnalyzer().analyzeInBitmap(image, 0)
+                        val text = "Image quality: ${analyzerResult?.name ?: "UNKNOWN"}"
                         Toast.makeText(this@SinglePagePreviewActivity, text, Toast.LENGTH_LONG)
                             .show()
 
