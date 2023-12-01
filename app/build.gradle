@@ -32,7 +32,7 @@ android {
     }
 }
 
-def scanbotSdkVersion = "4.1.0"
+def scanbotSdkVersion = "4.1.1"
 
 dependencies {
 
