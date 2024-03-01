@@ -20,11 +20,11 @@ import com.example.scanbot.sharing.SharingDocumentStorage
 import com.example.scanbot.usecases.GeneratePdfForSharingUseCase
 import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
 import com.example.scanbot.utils.ExampleUtils
+import io.scanbot.imagefilters.ParametricFilter
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageFileStorage
 import io.scanbot.sdk.persistence.cleanup.Cleaner
-import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.usecases.documents.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.coroutines.CoroutineContext
-
 
 class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener, CoroutineScope {
 
@@ -139,8 +138,8 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         supportActionBar?.title = getString(R.string.scan_results)
     }
 
-    override fun onFilterApplied(filterType: ImageFilterType) {
-        applyFilter(filterType)
+    override fun onFilterApplied(filter: ParametricFilter) {
+        applyFilter(filter)
     }
 
     override fun savePdf() {
@@ -151,7 +150,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
         saveDocumentTiff()
     }
 
-    private fun applyFilter(imageFilterType: ImageFilterType) {
+    private fun applyFilter(filter: ParametricFilter) {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
@@ -159,7 +158,7 @@ class PagesPreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
             launch {
                 adapter.items.forEach { page ->
                     withContext(Dispatchers.Default) {
-                        exampleSingleton.pageProcessorInstance().applyFilter(page, imageFilterType)
+                        exampleSingleton.pageProcessorInstance().applyFilter(page, filter)
                     }
                 }
 

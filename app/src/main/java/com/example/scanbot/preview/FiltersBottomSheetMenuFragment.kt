@@ -6,68 +6,45 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import io.scanbot.imagefilters.ColorDocumentFilter
+import io.scanbot.imagefilters.GrayscaleFilter
+import io.scanbot.imagefilters.LegacyFilter
+import io.scanbot.imagefilters.ParametricFilter
+import io.scanbot.imagefilters.ScanbotBinarizationFilter
+import io.scanbot.imagefilters.WhiteBlackPointFilter
 import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.usecases.documents.R
 
-/**
- * Represents bottom menu sheet for document screen
- */
+/** Represents bottom menu sheet for document screen. */
 class FiltersBottomSheetMenuFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.filters_bottom_sheet, container, false)
 
-        view.findViewById<Button>(R.id.lowLightBinarizationFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.LOW_LIGHT_BINARIZATION)
-        }
-        view.findViewById<Button>(R.id.lowLightBinarizationFilter2).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.LOW_LIGHT_BINARIZATION_2)
-        }
-        view.findViewById<Button>(R.id.edgeHighlightFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.EDGE_HIGHLIGHT)
-        }
-        view.findViewById<Button>(R.id.deepBinarizationFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.DEEP_BINARIZATION)
-        }
-        view.findViewById<Button>(R.id.otsuBinarizationFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.OTSU_BINARIZATION)
-        }
-        view.findViewById<Button>(R.id.cleanBackgroundFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.BACKGROUND_CLEAN)
-        }
         view.findViewById<Button>(R.id.colorDocumentFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.COLOR_DOCUMENT)
-        }
-        view.findViewById<Button>(R.id.colorFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.COLOR_ENHANCED)
+            callListenerAndDismiss(ColorDocumentFilter())
         }
         view.findViewById<Button>(R.id.grayscaleFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.GRAYSCALE)
+            callListenerAndDismiss(GrayscaleFilter())
         }
-        view.findViewById<Button>(R.id.binarizedFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.BINARIZED)
+        view.findViewById<Button>(R.id.binarizationFilter).setOnClickListener {
+            callListenerAndDismiss(ScanbotBinarizationFilter())
         }
-        view.findViewById<Button>(R.id.pureBinarizedFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.PURE_BINARIZED)
+        view.findViewById<Button>(R.id.whiteBlackPointFilter).setOnClickListener {
+            callListenerAndDismiss(WhiteBlackPointFilter())
         }
-        view.findViewById<Button>(R.id.blackAndWhiteFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.BLACK_AND_WHITE)
-        }
-        view.findViewById<Button>(R.id.sensitiveBinarizationFilter).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.SENSITIVE_BINARIZATION) // this relies on ImageProcessor.Type.ML_BASED - see comment in Application class
-        }
-        view.findViewById<Button>(R.id.none).setOnClickListener {
-            callListenerAndDismiss(ImageFilterType.NONE)
+        view.findViewById<Button>(R.id.filterNone).setOnClickListener {
+            callListenerAndDismiss(LegacyFilter(ImageFilterType.NONE.code))
         }
         return view
     }
 
-    private fun callListenerAndDismiss(imageFilterType: ImageFilterType) {
-        (activity as FiltersListener).onFilterApplied(imageFilterType)
+    private fun callListenerAndDismiss(filter: ParametricFilter) {
+        (activity as FiltersListener).onFilterApplied(filter)
         dismissAllowingStateLoss()
     }
 }

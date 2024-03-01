@@ -4,128 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingStart="16dp"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp">
-
-    <Button
-        android:id="@+id/lowLightBinarizationFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/low_light_binarization_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lowLightBinarizationFilter" />
-
-
-    <Button
-        android:id="@+id/lowLightBinarizationFilter2"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/low_light_binarization_filter_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lowLightBinarizationFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lowLightBinarizationFilter2" />
-
-    <Button
-        android:id="@+id/edgeHighlightFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/edge_highlight_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lowLightBinarizationFilter2" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edgeHighlightFilter" />
-
-    <Button
-        android:id="@+id/deepBinarizationFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/deep_binarization_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edgeHighlightFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deepBinarizationFilter" />
-
-    <Button
-        android:id="@+id/otsuBinarizationFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/otsu_binarization_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deepBinarizationFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/otsuBinarizationFilter" />
-
-    <Button
-        android:id="@+id/cleanBackgroundFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/clean_background_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/otsuBinarizationFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cleanBackgroundFilter" />
+    android:padding="16dp"
+    >
 
     <Button
         android:id="@+id/colorDocumentFilter"
-        
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="@string/color_document_filter"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/filter_color_document"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cleanBackgroundFilter" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <View
         android:layout_width="0dp"
@@ -133,35 +22,16 @@
         android:background="#1effffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorDocumentFilter" />
-
-    <Button
-        android:id="@+id/colorFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/color_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorDocumentFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorFilter" />
+        app:layout_constraintTop_toBottomOf="@id/colorDocumentFilter" />
 
     <Button
         android:id="@+id/grayscaleFilter"
-        
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="@string/grayscale_filter"
+        android:text="@string/filter_grayscale"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/colorFilter" />
+        app:layout_constraintTop_toBottomOf="@id/colorDocumentFilter" />
 
     <View
         android:layout_width="0dp"
@@ -169,17 +39,16 @@
         android:background="#1effffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grayscaleFilter" />
+        app:layout_constraintTop_toBottomOf="@id/grayscaleFilter" />
 
     <Button
-        android:id="@+id/binarizedFilter"
-        
+        android:id="@+id/binarizationFilter"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="@string/binarizedfilter"
+        android:text="@string/filter_binarization"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/grayscaleFilter" />
+        app:layout_constraintTop_toBottomOf="@id/grayscaleFilter" />
 
     <View
         android:layout_width="0dp"
@@ -187,17 +56,16 @@
         android:background="#1effffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binarizedFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/binarizationFilter" />
 
     <Button
-        android:id="@+id/pureBinarizedFilter"
-        
+        android:id="@+id/whiteBlackPointFilter"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="@string/pure_binarized_filter"
+        android:text="@string/filter_white_black_point"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/binarizedFilter" />
+        app:layout_constraintTop_toBottomOf="@id/binarizationFilter" />
 
     <View
         android:layout_width="0dp"
@@ -205,52 +73,14 @@
         android:background="#1effffff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pureBinarizedFilter" />
+        app:layout_constraintTop_toBottomOf="@+id/whiteBlackPointFilter" />
 
     <Button
-        android:id="@+id/blackAndWhiteFilter"
-        
+        android:id="@+id/filterNone"
         android:layout_width="0dp"
         android:layout_height="48dp"
-        android:text="@string/black_amp_white_filter"
+        android:text="@string/filter_none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pureBinarizedFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blackAndWhiteFilter" />
-
-    <Button
-        android:id="@+id/sensitiveBinarizationFilter"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/sensitive_binarization_filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/blackAndWhiteFilter" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:background="#1effffff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensitiveBinarizationFilter" />
-
-    <Button
-        android:id="@+id/none"
-        
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:text="@string/none"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensitiveBinarizationFilter" />
-
+        app:layout_constraintTop_toBottomOf="@id/whiteBlackPointFilter" />
 </androidx.constraintlayout.widget.ConstraintLayout>

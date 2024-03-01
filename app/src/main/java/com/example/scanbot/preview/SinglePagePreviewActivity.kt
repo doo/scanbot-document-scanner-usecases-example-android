@@ -20,10 +20,10 @@ import com.example.scanbot.usecases.GeneratePngForSharingUseCase
 import com.example.scanbot.usecases.GenerateTiffForSharingUseCase
 import com.example.scanbot.utils.ExampleUtils
 import com.example.scanbot.utils.ExampleUtils.showEncryptedDocumentToast
+import io.scanbot.imagefilters.ParametricFilter
 import io.scanbot.sdk.ScanbotSDK
 import io.scanbot.sdk.persistence.Page
 import io.scanbot.sdk.persistence.PageFileStorage
-import io.scanbot.sdk.process.ImageFilterType
 import io.scanbot.sdk.ui.registerForActivityResultOk
 import io.scanbot.sdk.ui.view.edit.CroppingActivity
 import io.scanbot.sdk.ui.view.edit.configuration.CroppingConfiguration
@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import kotlin.coroutines.CoroutineContext
-
 
 class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveListener,
     CoroutineScope {
@@ -204,8 +203,8 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         supportActionBar?.title = getString(R.string.scan_results)
     }
 
-    override fun onFilterApplied(filterType: ImageFilterType) {
-        applyFilter(filterType)
+    override fun onFilterApplied(filter: ParametricFilter) {
+        applyFilter(filter)
     }
 
     override fun savePdf() {
@@ -224,14 +223,13 @@ class SinglePagePreviewActivity : AppCompatActivity(), FiltersListener, SaveList
         saveDocumentImage(false)
     }
 
-    private fun applyFilter(imageFilterType: ImageFilterType) {
+    private fun applyFilter(filter: ParametricFilter) {
         if (!scanbotSDK.licenseInfo.isValid) {
             showLicenseToast()
         } else {
             progress.visibility = View.VISIBLE
             launch {
-                page = exampleSingleton.pageProcessorInstance()
-                    .applyFilter(page, imageFilterType)
+                page = exampleSingleton.pageProcessorInstance().applyFilter(page, filter)
                 withContext(Dispatchers.Main) {
                     updateImageView()
                     progress.visibility = View.GONE

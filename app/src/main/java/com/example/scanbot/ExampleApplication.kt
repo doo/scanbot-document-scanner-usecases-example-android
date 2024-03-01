@@ -8,7 +8,6 @@ import io.scanbot.sdk.ScanbotSDKInitializer
 import io.scanbot.sdk.core.contourdetector.ContourDetector
 import io.scanbot.sdk.persistence.CameraImageFormat
 import io.scanbot.sdk.persistence.PageStorageSettings
-import io.scanbot.sdk.process.ImageProcessor
 
 class ExampleApplication : Application() {
 
@@ -59,7 +58,6 @@ class ExampleApplication : Application() {
 
             })
             .useFileEncryption(USE_ENCRYPTION)
-            .imageProcessorType(ImageProcessor.Type.ML_BASED)
             .license(this, LICENSE_KEY)
             .initialize(this)
     }
